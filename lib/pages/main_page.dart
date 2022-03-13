@@ -113,6 +113,7 @@ class FavoritesWidget extends StatelessWidget {
         ),
         SizedBox(height: 8),
         Padding(
+          
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: SuperheroCard(name: "Ironman", realName: 'Tony Stark', imgageUrl: 'https://www.superherodb.com/pictures2/portraits/10/100/85.jpg',),
         )
