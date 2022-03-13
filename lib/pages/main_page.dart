@@ -76,6 +76,7 @@ class MainPageStateWidget extends StatelessWidget {
             return NothingFoundWidget();
           case MainPageState.loadingError:
           case MainPageState.searchResults:
+            return SearchResultsWidget();
           case MainPageState.favorites:
             return FavoritesWidget();
           default:
@@ -86,6 +87,38 @@ class MainPageStateWidget extends StatelessWidget {
             ));
         }
       },
+    );
+  }
+}
+
+class SearchResultsWidget extends StatelessWidget {
+  const SearchResultsWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 90),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text('Search results', style: TextStyle(color: SuperheroesColors.white, fontSize: 24, fontWeight: FontWeight.w800), textAlign: TextAlign.start),
+        ),
+        SizedBox(height: 20),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SuperheroCard(name: "Batman", realName: 'Bruce Wayne',  imageUrl: 'https://www.superherodb.com/pictures2/portraits/10/100/639.jpg',),
+        ),
+        SizedBox(height: 8),
+        Padding(
+
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: SuperheroCard(name: "Venom", realName: ' Eddie Brock',  imageUrl: 'https://www.superherodb.com/pictures2/portraits/10/100/22.jpg',),
+        )
+      ],
     );
   }
 }
@@ -109,13 +142,13 @@ class FavoritesWidget extends StatelessWidget {
 
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SuperheroCard(name: "Batman", realName: 'Bruce Wayne', imgageUrl: 'https://www.superherodb.com/pictures2/portraits/10/100/639.jpg',),
+          child: SuperheroCard(name: "Batman", realName: 'Bruce Wayne',  imageUrl: 'https://www.superherodb.com/pictures2/portraits/10/100/639.jpg',),
         ),
         SizedBox(height: 8),
         Padding(
-          
+
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SuperheroCard(name: "Ironman", realName: 'Tony Stark', imgageUrl: 'https://www.superherodb.com/pictures2/portraits/10/100/85.jpg',),
+          child: SuperheroCard(name: "Ironman", realName: 'Tony Stark',  imageUrl: 'https://www.superherodb.com/pictures2/portraits/10/100/85.jpg',),
         )
       ],
     );

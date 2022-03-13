@@ -6,13 +6,13 @@ import 'package:superheroes/resources/superheroes_images.dart';
 class SuperheroCard extends StatelessWidget {
   String name;
   String realName;
-  String imgageUrl;
+  String imageUrl;
 
   SuperheroCard({
     Key? key,
     required this.name,
     required this.realName,
-    required this.imgageUrl,
+    required this.imageUrl,
   }) : super(key: key);
 
   @override
@@ -22,7 +22,7 @@ class SuperheroCard extends StatelessWidget {
       color: SuperheroesColors.backgroundcard,
       child: Row(
         children: [
-          Image.network(imgageUrl,width: 70, height: 70, fit: BoxFit.fitWidth),
+          Image.network(imageUrl,width: 70, height: 70, fit: BoxFit.cover),
           SizedBox(width: 12),
           Expanded(child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
