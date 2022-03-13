@@ -116,7 +116,7 @@ class SearchResultsWidget extends StatelessWidget {
         Padding(
 
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SuperheroCard(name: "Venom", realName: ' Eddie Brock',  imageUrl: 'https://www.superherodb.com/pictures2/portraits/10/100/22.jpg',),
+          child: SuperheroCard(name: "Venom", realName: 'Eddie Brock',  imageUrl: 'https://www.superherodb.com/pictures2/portraits/10/100/22.jpg',),
         )
       ],
     );
