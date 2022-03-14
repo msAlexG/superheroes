@@ -121,9 +121,7 @@ class SearchResultsWidget extends StatelessWidget {
               imageUrl:
                   'https://www.superherodb.com/pictures2/portraits/10/100/639.jpg',
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SuperheroPage(name: 'Batman'),
-                ));
+
 
 
               }),
@@ -137,9 +135,6 @@ class SearchResultsWidget extends StatelessWidget {
               imageUrl:
                   'https://www.superherodb.com/pictures2/portraits/10/100/22.jpg',
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SuperheroPage(name: 'Venom'),
-                ));
               }),
         )
       ],
