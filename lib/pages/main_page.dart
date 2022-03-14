@@ -101,14 +101,16 @@ class LoadingErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InfoWithButton(
-      title: 'Error happened',
-      subtitle: 'Please, try again',
-      assetImage: SuperheroesImages.superman,
-      buttonText: 'Retry',
-      imageTopPadding: 9,
-      imageHeight: 106,
-      imageWidth: 126,
+    return Center(
+      child: InfoWithButton(
+        title: 'Error happened',
+        subtitle: 'Please, try again',
+        assetImage: SuperheroesImages.superman,
+        buttonText: 'Retry',
+        imageTopPadding: 9,
+        imageHeight: 106,
+        imageWidth: 126,
+      ),
     );
   }
 }
@@ -226,14 +228,16 @@ class NothingFoundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InfoWithButton(
-      title: 'Nothing found',
-      subtitle: 'Search for something else',
-      assetImage: SuperheroesImages.halk,
-      buttonText: 'Search',
-      imageTopPadding: 9,
-      imageHeight: 112,
-      imageWidth: 84,
+    return Center(
+      child: InfoWithButton(
+        title: 'Nothing found',
+        subtitle: 'Search for something else',
+        assetImage: SuperheroesImages.halk,
+        buttonText: 'Search',
+        imageTopPadding: 9,
+        imageHeight: 112,
+        imageWidth: 84,
+      ),
     );
   }
 }

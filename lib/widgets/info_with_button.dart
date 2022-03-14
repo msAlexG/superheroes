@@ -28,13 +28,14 @@ class InfoWithButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         //Center Column contents vertically,
 
         children: [
           Stack(
+            alignment: Alignment.topCenter,
             children: [
+
               Container(
                 width: 108,
                 height: 108,
@@ -44,7 +45,7 @@ class InfoWithButton extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: imageTopPadding),
                 child: Image.asset(assetImage,
-                    width: imageWidth, height: imageHeight),
+                    width: imageWidth, height: imageHeight, fit: BoxFit.cover),
               )
             ],
           ),
