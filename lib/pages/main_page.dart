@@ -6,6 +6,7 @@ import 'package:superheroes/pages/superhero_page.dart';
 import 'package:superheroes/resources/superheroes_colors.dart';
 import 'package:superheroes/resources/superheroes_images.dart';
 import 'package:superheroes/widgets/action_button.dart';
+import 'package:superheroes/widgets/info_with_button.dart';
 import 'package:superheroes/widgets/superhero_card.dart';
 
 class MainPage extends StatefulWidget {
@@ -76,6 +77,7 @@ class MainPageStateWidget extends StatelessWidget {
           case MainPageState.nothingFound:
             return NothingFoundWidget();
           case MainPageState.loadingError:
+            return LoadingErrorWidget();
           case MainPageState.searchResults:
             return SearchResultsWidget();
           case MainPageState.favorites:
@@ -88,6 +90,25 @@ class MainPageStateWidget extends StatelessWidget {
             ));
         }
       },
+    );
+  }
+}
+
+class LoadingErrorWidget extends StatelessWidget {
+  const LoadingErrorWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InfoWithButton(
+      title: 'Error happened',
+      subtitle: 'Please, try again',
+      assetImage: SuperheroesImages.superman,
+      buttonText: 'Retry',
+      imageTopPadding: 9,
+      imageHeight: 106,
+      imageWidth: 126,
     );
   }
 }
@@ -121,9 +142,9 @@ class SearchResultsWidget extends StatelessWidget {
               imageUrl:
                   'https://www.superherodb.com/pictures2/portraits/10/100/639.jpg',
               onTap: () {
-
-
-
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SuperheroPage(name: 'Batman'),
+                ));
               }),
         ),
         SizedBox(height: 8),
@@ -135,6 +156,9 @@ class SearchResultsWidget extends StatelessWidget {
               imageUrl:
                   'https://www.superherodb.com/pictures2/portraits/10/100/22.jpg',
               onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SuperheroPage(name: 'Venom'),
+                ));
               }),
         )
       ],
@@ -202,7 +226,15 @@ class NothingFoundWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column();
+    return InfoWithButton(
+      title: 'Nothing found',
+      subtitle: 'Search for something else',
+      assetImage: SuperheroesImages.halk,
+      buttonText: 'Search',
+      imageTopPadding: 9,
+      imageHeight: 112,
+      imageWidth: 84,
+    );
   }
 }
 

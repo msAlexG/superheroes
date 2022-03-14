@@ -28,9 +28,7 @@ class SuperheroPage extends StatelessWidget {
           child: ActionButton(
             text: 'Back',
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => MainPage(),
-              ));
+              Navigator.of(context).pop();
             },
           ),
         )
