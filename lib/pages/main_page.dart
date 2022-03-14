@@ -68,12 +68,12 @@ class MainPageStateWidget extends StatelessWidget {
         }
         final MainPageState state = snapshot.data!;
         switch (state) {
-          case MainPageState.loading:
-            return LoadingIndicator();
           case MainPageState.noFavorites:
             return NoFavoritesWidget();
           case MainPageState.minSymbols:
             return MinSymbolsWidget();
+          case MainPageState.loading:
+            return LoadingIndicator();
           case MainPageState.nothingFound:
             return NothingFoundWidget();
           case MainPageState.loadingError:
@@ -101,16 +101,34 @@ class LoadingErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: InfoWithButton(
-        title: 'Error happened',
-        subtitle: 'Please, try again',
-        assetImage: SuperheroesImages.superman,
-        buttonText: 'Retry',
-        imageTopPadding: 9,
-        imageHeight: 106,
-        imageWidth: 126,
-      ),
+    return InfoWithButton(
+      title: 'Error happened',
+      subtitle: 'Please, try again',
+      assetImage: SuperheroesImages.superman,
+      buttonText: 'Retry',
+      imageTopPadding: 22,
+      imageHeight: 106,
+      imageWidth: 126,
+    );
+  }
+}
+
+
+class NothingFoundWidget extends StatelessWidget {
+  const NothingFoundWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InfoWithButton(
+      title: 'Nothing found',
+      subtitle: 'Search for something else',
+      assetImage: SuperheroesImages.halk,
+      buttonText: 'Search',
+      imageTopPadding: 16,
+      imageHeight: 112,
+      imageWidth: 84,
     );
   }
 }
@@ -221,26 +239,7 @@ class FavoritesWidget extends StatelessWidget {
   }
 }
 
-class NothingFoundWidget extends StatelessWidget {
-  const NothingFoundWidget({
-    Key? key,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: InfoWithButton(
-        title: 'Nothing found',
-        subtitle: 'Search for something else',
-        assetImage: SuperheroesImages.halk,
-        buttonText: 'Search',
-        imageTopPadding: 9,
-        imageHeight: 112,
-        imageWidth: 84,
-      ),
-    );
-  }
-}
 
 class NoFavoritesWidget extends StatelessWidget {
   const NoFavoritesWidget({

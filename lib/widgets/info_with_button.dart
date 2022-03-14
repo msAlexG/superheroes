@@ -11,6 +11,7 @@ class InfoWithButton extends StatelessWidget {
   double imageHeight;
   double imageWidth;
   double imageTopPadding;
+
   InfoWithButton({
     Key? key,
     required this.title,
@@ -29,13 +30,11 @@ class InfoWithButton extends StatelessWidget {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        //Center Column contents vertically,
 
         children: [
           Stack(
             alignment: Alignment.topCenter,
             children: [
-
               Container(
                 width: 108,
                 height: 108,
@@ -45,7 +44,7 @@ class InfoWithButton extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: imageTopPadding),
                 child: Image.asset(assetImage,
-                    width: imageWidth, height: imageHeight, fit: BoxFit.cover),
+                    width: imageWidth, height: imageHeight),
               )
             ],
           ),
