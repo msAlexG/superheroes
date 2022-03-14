@@ -94,6 +94,26 @@ class MainPageStateWidget extends StatelessWidget {
   }
 }
 
+
+class NoFavoritesWidget extends StatelessWidget {
+  const NoFavoritesWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InfoWithButton(
+      title: 'No favorites yet',
+      subtitle: 'Search and add',
+      assetImage: SuperheroesImages.ironman,
+      buttonText: 'Search',
+      imageTopPadding: 9,
+      imageHeight: 119,
+      imageWidth: 108,
+    );
+  }
+}
+
 class LoadingErrorWidget extends StatelessWidget {
   const LoadingErrorWidget({
     Key? key,
@@ -101,14 +121,16 @@ class LoadingErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InfoWithButton(
-      title: 'Error happened',
-      subtitle: 'Please, try again',
-      assetImage: SuperheroesImages.superman,
-      buttonText: 'Retry',
-      imageTopPadding: 22,
-      imageHeight: 106,
-      imageWidth: 126,
+    return Center(
+      child: InfoWithButton(
+        title: 'Error happened',
+        subtitle: 'Please, try again',
+        assetImage: SuperheroesImages.superman,
+        buttonText: 'Retry',
+        imageTopPadding: 22,
+        imageHeight: 106,
+        imageWidth: 126,
+      ),
     );
   }
 }
@@ -241,59 +263,7 @@ class FavoritesWidget extends StatelessWidget {
 
 
 
-class NoFavoritesWidget extends StatelessWidget {
-  const NoFavoritesWidget({
-    Key? key,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        //Center Column contents vertically,
-
-        children: [
-          Stack(
-            children: [
-              Container(
-                width: 108,
-                height: 108,
-                decoration: BoxDecoration(
-                    color: SuperheroesColors.blue, shape: BoxShape.circle),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 9),
-                child: Image.asset(SuperheroesImages.ironman,
-                    width: 108, height: 119),
-              )
-            ],
-          ),
-          SizedBox(height: 20),
-          Text(
-            'No favorites yet',
-            style: TextStyle(
-                color: SuperheroesColors.white,
-                fontSize: 32,
-                fontWeight: FontWeight.w800),
-          ),
-          SizedBox(height: 20),
-          Text('Search and add'.toUpperCase(),
-              style: TextStyle(
-                  color: SuperheroesColors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700)),
-          SizedBox(height: 30),
-          ActionButton(
-            text: 'Search',
-            onTap: () {},
-          )
-        ],
-      ),
-    );
-  }
-}
 
 class MinSymbolsWidget extends StatelessWidget {
   const MinSymbolsWidget({
