@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:superheroes/blocs/main_bloc.dart';
+import 'package:superheroes/pages/superhero_page.dart';
 import 'package:superheroes/resources/superheroes_colors.dart';
 import 'package:superheroes/resources/superheroes_images.dart';
 import 'package:superheroes/widgets/action_button.dart';
@@ -104,19 +105,42 @@ class SearchResultsWidget extends StatelessWidget {
         SizedBox(height: 90),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text('Search results', style: TextStyle(color: SuperheroesColors.white, fontSize: 24, fontWeight: FontWeight.w800), textAlign: TextAlign.start),
+          child: Text('Search results',
+              style: TextStyle(
+                  color: SuperheroesColors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800),
+              textAlign: TextAlign.start),
         ),
         SizedBox(height: 20),
-
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SuperheroCard(name: "Batman", realName: 'Bruce Wayne',  imageUrl: 'https://www.superherodb.com/pictures2/portraits/10/100/639.jpg',),
+          child: SuperheroCard(
+              name: "Batman",
+              realName: 'Bruce Wayne',
+              imageUrl:
+                  'https://www.superherodb.com/pictures2/portraits/10/100/639.jpg',
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SuperheroPage(name: 'Batman'),
+                ));
+
+
+              }),
         ),
         SizedBox(height: 8),
         Padding(
-
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SuperheroCard(name: "Venom", realName: 'Eddie Brock',  imageUrl: 'https://www.superherodb.com/pictures2/portraits/10/100/22.jpg',),
+          child: SuperheroCard(
+              name: "Venom",
+              realName: 'Eddie Brock',
+              imageUrl:
+                  'https://www.superherodb.com/pictures2/portraits/10/100/22.jpg',
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SuperheroPage(name: 'Venom'),
+                ));
+              }),
         )
       ],
     );
@@ -136,19 +160,40 @@ class FavoritesWidget extends StatelessWidget {
         SizedBox(height: 90),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text('Your favorites', style: TextStyle(color: SuperheroesColors.white, fontSize: 24, fontWeight: FontWeight.w800), textAlign: TextAlign.start),
+          child: Text('Your favorites',
+              style: TextStyle(
+                  color: SuperheroesColors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800),
+              textAlign: TextAlign.start),
         ),
         SizedBox(height: 20),
-
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SuperheroCard(name: "Batman", realName: 'Bruce Wayne',  imageUrl: 'https://www.superherodb.com/pictures2/portraits/10/100/639.jpg',),
+          child: SuperheroCard(
+              name: "Batman",
+              realName: 'Bruce Wayne',
+              imageUrl:
+                  'https://www.superherodb.com/pictures2/portraits/10/100/639.jpg',
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SuperheroPage(name: 'Batman'),
+                ));
+              }),
         ),
         SizedBox(height: 8),
         Padding(
-
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SuperheroCard(name: "Ironman", realName: 'Tony Stark',  imageUrl: 'https://www.superherodb.com/pictures2/portraits/10/100/85.jpg',),
+          child: SuperheroCard(
+              name: "Ironman",
+              realName: 'Tony Stark',
+              imageUrl:
+                  'https://www.superherodb.com/pictures2/portraits/10/100/85.jpg',
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SuperheroPage(name: 'Ironman'),
+                ));
+              }),
         )
       ],
     );
@@ -190,7 +235,8 @@ class NoFavoritesWidget extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 9),
-                child: Image.asset(SuperheroesImages.ironman,width: 108, height: 119),
+                child: Image.asset(SuperheroesImages.ironman,
+                    width: 108, height: 119),
               )
             ],
           ),
