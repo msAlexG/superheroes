@@ -62,7 +62,7 @@ class SearchWidget extends StatefulWidget {
 
 class _SearchWidgetState extends State<SearchWidget> {
   final TextEditingController controller = TextEditingController();
-   bool controllerEmpty = true;
+   bool controllerEmpty = false;
 
 
 
@@ -72,7 +72,19 @@ class _SearchWidgetState extends State<SearchWidget> {
     super.initState();
     SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
       final MainBloc bloc = Provider.of<MainBloc>(context, listen: false);
-      controller.addListener((){ bloc.updateText(controller.text); });
+      controller.addListener((){
+        bloc.updateText(controller.text);
+        if (controller.text != '') {
+          setState(() {
+            controllerEmpty = true;
+          });
+        }
+        else{
+          setState(() {
+            controllerEmpty = false;
+          });
+        }
+      });
      // print( 'New' + controller.text);
 
     });
@@ -121,7 +133,7 @@ class _SearchWidgetState extends State<SearchWidget> {
 
 
             ),
-      onSubmitted: _run,
+     
 
 
 
@@ -130,18 +142,7 @@ class _SearchWidgetState extends State<SearchWidget> {
 
   
 
-   _run(String text) {
-if (text != '') {
-  setState(() {
-    controllerEmpty = true;
-  });
-}
-else{
-  setState(() {
-    controllerEmpty = false;
-  });
-}
-  }
+
 }
 
 class MainPageStateWidget extends StatelessWidget {
