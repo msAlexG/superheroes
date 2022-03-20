@@ -6,6 +6,7 @@ import 'package:superheroes/widgets/action_button.dart';
 class SuperheroPage extends StatelessWidget {
   String name;
 
+
   SuperheroPage({Key? key, required this.name}) : super(key: key);
 
   @override

@@ -36,6 +36,7 @@ class _MainPageState extends State<MainPage> {
   void dispose() {
     bloc.dispose();
     super.dispose();
+
   }
 }
 
@@ -61,13 +62,19 @@ class SearchWidget extends StatefulWidget {
 
 class _SearchWidgetState extends State<SearchWidget> {
   final TextEditingController controller = TextEditingController();
+   bool controllerEmpty = false;
+
+
+
 
   @override
   void initState() {
     super.initState();
     SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
       final MainBloc bloc = Provider.of<MainBloc>(context, listen: false);
-      controller.addListener(() => bloc.updateText(controller.text));
+      controller.addListener((){ bloc.updateText(controller.text); });
+     // print( 'New' + controller.text);
+
     });
   }
 
@@ -76,8 +83,10 @@ class _SearchWidgetState extends State<SearchWidget> {
     final MainBloc bloc = Provider.of<MainBloc>(context, listen: false);
     return TextField(
       textInputAction: TextInputAction.search,
-      textCapitalization: TextCapitalization.words, // каждая буква слова с большой буквы
-      cursorColor: Colors.white, // цвет курсора
+      textCapitalization: TextCapitalization.words,
+      // каждая буква слова с большой буквы
+      cursorColor: Colors.white,
+      // цвет курсора
       controller: controller,
       style: TextStyle(
           fontWeight: FontWeight.w400,
@@ -94,17 +103,38 @@ class _SearchWidgetState extends State<SearchWidget> {
                   Icon(Icons.close, color: SuperheroesColors.white, size: 24),
               onTap: () => controller.clear()),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-          enabledBorder: OutlineInputBorder(
+
+          focusedBorder:  OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: SuperheroesColors.white24)),
-          focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: SuperheroesColors.white, width: 2)),
+          enabledBorder: controllerEmpty == false ?  OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide:
-                  BorderSide(color: SuperheroesColors.white, width: 2))
+              borderSide: BorderSide(color: SuperheroesColors.white24)) : OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8),
+              borderSide: BorderSide(color: SuperheroesColors.white, width: 2)),
 
 
-      ),
+            ),
+      onSubmitted: _run,
+
+
+
     );
+  }
+
+  
+
+   _run(String text) {
+if (text != '') {
+  setState(() {
+    controllerEmpty = true;
+  });
+}
+else{
+  setState(() {
+    controllerEmpty = false;
+  });
+}
   }
 }
 
