@@ -62,7 +62,7 @@ class SearchWidget extends StatefulWidget {
 
 class _SearchWidgetState extends State<SearchWidget> {
   final TextEditingController controller = TextEditingController();
-   bool controllerEmpty = false;
+   bool controllerEmpty = true;
 
 
 
