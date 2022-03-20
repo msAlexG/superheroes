@@ -101,17 +101,23 @@ class _SearchWidgetState extends State<SearchWidget> {
           suffix: GestureDetector(
               child:
                   Icon(Icons.close, color: SuperheroesColors.white, size: 24),
-              onTap: () => controller.clear()),
+              onTap: (){ controller.clear();
+              setState(() {
+                controllerEmpty = false;
+              });
+              }),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
 
           focusedBorder:  OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide(color: SuperheroesColors.white, width: 2)),
-          enabledBorder: controllerEmpty == false ?  OutlineInputBorder(
+          enabledBorder: controllerEmpty == true ?
+          OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: SuperheroesColors.white24)) : OutlineInputBorder(
+              borderSide: BorderSide(color: SuperheroesColors.white, width: 2))
+          :  OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(color: SuperheroesColors.white, width: 2)),
+              borderSide: BorderSide(color: SuperheroesColors.white24)),
 
 
             ),
