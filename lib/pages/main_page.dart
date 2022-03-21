@@ -35,6 +35,7 @@ class _MainPageState extends State<MainPage> {
   @override
   void dispose() {
     bloc.dispose();
+
     super.dispose();
 
   }
@@ -92,7 +93,7 @@ class _SearchWidgetState extends State<SearchWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final MainBloc bloc = Provider.of<MainBloc>(context, listen: false);
+   // final MainBloc bloc = Provider.of<MainBloc>(context, listen: false);
     return TextField(
       textInputAction: TextInputAction.search,
       textCapitalization: TextCapitalization.words,
@@ -133,14 +134,15 @@ class _SearchWidgetState extends State<SearchWidget> {
 
 
             ),
-     
+
+
 
 
 
     );
   }
 
-  
+
 
 
 }

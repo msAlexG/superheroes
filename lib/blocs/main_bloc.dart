@@ -16,7 +16,7 @@ class MainBloc {
 
   MainBloc() {
     stateSubject.add(MainPageState.noFavorites);
-    Rx.combineLatest2<String, List<SuperheroInfo>, MainPageStateInfo>(
+    textSubscription = Rx.combineLatest2<String, List<SuperheroInfo>, MainPageStateInfo>(
         currentTextSubject.distinct().debounceTime(Duration(milliseconds: 500)),
         favoriteSuperheroesSubject,
         (searcedText, favorites) =>
@@ -103,7 +103,6 @@ class MainBloc {
     favoriteSuperheroesSubject.close();
     seachedSuperheroesSubject.close();
     currentTextSubject.close();
-
     textSubscription?.cancel();
   }
 }
