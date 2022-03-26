@@ -160,7 +160,13 @@ class MainPageStateWidget extends StatelessWidget {
         final MainPageState state = snapshot.data!;
         switch (state) {
           case MainPageState.noFavorites:
-            return NoFavoritesWidget();
+            return Stack(
+              children: [
+                NoFavoritesWidget(),
+                Align(alignment: Alignment.bottomCenter,
+                    child: ActionButton(text: 'Remove', onTap: bloc.removeFavorite))
+              ],
+            );
           case MainPageState.minSymbols:
             return MinSymbolsWidget();
           case MainPageState.loading:
@@ -175,9 +181,15 @@ class MainPageStateWidget extends StatelessWidget {
               stream: bloc.observeSearcedSuperherose(),
             );
           case MainPageState.favorites:
-            return SuperheroesList(
-              title: 'Your fovorits',
-              stream: bloc.observeFavoriteSuperherose(),
+            return Stack(
+              children: [
+                SuperheroesList(
+                  title: 'Your fovorits',
+                  stream: bloc.observeFavoriteSuperherose(),
+                ),
+                Align(alignment: Alignment.bottomCenter,
+                    child: ActionButton(text: 'Remove', onTap: bloc.removeFavorite))
+              ],
             );
           default:
             return Center(
@@ -189,6 +201,9 @@ class MainPageStateWidget extends StatelessWidget {
       },
     );
   }
+
+
+
 }
 
 class NoFavoritesWidget extends StatelessWidget {
