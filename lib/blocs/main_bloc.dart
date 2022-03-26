@@ -40,6 +40,17 @@ class MainBloc {
       }
     });
   }
+  
+    removeFavorite() {
+    final currenfavoriteSuperheroesList = favoriteSuperheroesSubject.value;
+
+    if (currenfavoriteSuperheroesList.isEmpty) {
+      favoriteSuperheroesSubject.add(SuperheroInfo.mocked);
+    } else {
+      favoriteSuperheroesSubject.add(currenfavoriteSuperheroesList.sublist(
+          0, currenfavoriteSuperheroesList.length - 1));
+    }
+  }
 
   void searchForSuperheroes(final String text) {
 
