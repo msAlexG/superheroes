@@ -11,6 +11,7 @@ class InfoWithButton extends StatelessWidget {
   double imageHeight;
   double imageWidth;
   double imageTopPadding;
+  VoidCallback onTap;
 
   InfoWithButton({
     Key? key,
@@ -20,7 +21,9 @@ class InfoWithButton extends StatelessWidget {
     required this.assetImage,
     required this.imageHeight,
     required this.imageWidth,
-    required this.imageTopPadding
+    required this.imageTopPadding,
+    required this.onTap
+
 
   }) : super(key: key);
 
@@ -65,7 +68,7 @@ class InfoWithButton extends StatelessWidget {
           SizedBox(height: 30),
           ActionButton(
             text: buttonText,
-            onTap: () {},
+            onTap: onTap,
           )
         ],
       ),

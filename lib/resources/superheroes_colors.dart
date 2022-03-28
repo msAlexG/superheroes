@@ -11,4 +11,9 @@ class SuperheroesColors {
   static const backgroundcard = Color(0xFF2C3243);
   static const indigo75 = Color(0xBF2C3243);
 
+
+
+
+
+
 }

@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
+import 'package:superheroes/model/superhero.dart';
 
 class MainBloc {
   static const minSymbols = 3;
@@ -14,25 +18,26 @@ class MainBloc {
   StreamSubscription? textSubscription;
   StreamSubscription? searchSubscription;
 
-  MainBloc() {
-    stateSubject.add(MainPageState.noFavorites);
-    textSubscription = Rx.combineLatest2<String, List<SuperheroInfo>, MainPageStateInfo>(
-        currentTextSubject.distinct().debounceTime(Duration(milliseconds: 500)),
-        favoriteSuperheroesSubject,
-        (searcedText, favorites) =>
-            MainPageStateInfo(searcedText, favorites.isNotEmpty)).listen((value) {
+  http.Client? client;
 
+  MainBloc({this.client}) {
+    stateSubject.add(MainPageState.noFavorites);
+    textSubscription =
+        Rx.combineLatest2<String, List<SuperheroInfo>, MainPageStateInfo>(
+                currentTextSubject
+                    .distinct()
+                    .debounceTime(Duration(milliseconds: 500)),
+                favoriteSuperheroesSubject,
+                (searcedText, favorites) =>
+                    MainPageStateInfo(searcedText, favorites.isNotEmpty))
+            .listen((value) {
       searchSubscription?.cancel();
       if (value.searchText.isEmpty) {
-        
         if (value.haveFavorites) {
           stateSubject.add(MainPageState.favorites);
-        }  
-        else{
+        } else {
           stateSubject.add(MainPageState.noFavorites);
         }
-        
-
       } else if (value.searchText.length < minSymbols) {
         stateSubject.add(MainPageState.minSymbols);
       } else {
@@ -41,19 +46,24 @@ class MainBloc {
     });
   }
 
-  void searchForSuperheroes(final String text) {
+  removeFavorite() {
+    final currenfavoriteSuperheroesList = favoriteSuperheroesSubject.value;
 
+    if (currenfavoriteSuperheroesList.isEmpty) {
+      favoriteSuperheroesSubject.add(SuperheroInfo.mocked);
+    } else {
+      favoriteSuperheroesSubject.add(currenfavoriteSuperheroesList.sublist(
+          0, currenfavoriteSuperheroesList.length - 1));
+    }
+  }
+
+  void searchForSuperheroes(final String text) {
     stateSubject.add(MainPageState.loading);
     searchSubscription = search(text).asStream().listen((searchResults) {
-     // print(searchResults);
+      // print(searchResults);
       if (searchResults.isEmpty) {
         stateSubject.add(MainPageState.nothingFound);
-
       } else {
-
-
-
-
         seachedSuperheroesSubject.add(searchResults);
         stateSubject.add(MainPageState.searchResults);
       }
@@ -69,19 +79,38 @@ class MainBloc {
       seachedSuperheroesSubject;
 
   Future<List<SuperheroInfo>> search(final String text) async {
-    await Future.delayed(Duration(seconds: 1));
+    final token = dotenv.env['SUPERHERO_TOKEN'];
+    final response = await (client ??= http.Client())
+        .get(Uri.parse('https://superheroapi.com/api/$token/search/$text'));
+
+    final decoded = json.decode(response.body);
+    if (decoded['response'] == 'success') {
+      final List<dynamic> results = decoded['results'];
+      final List<Superhero> superheroes = results
+          .map((rawSuperhero) => Superhero.fromJson(rawSuperhero))
+          .toList();
+      final List<SuperheroInfo> found = superheroes.map((superheroes) {
+        return SuperheroInfo(
+            name: superheroes.name,
+            realName: superheroes.biography.fullName,
+            imageUrl: superheroes.image.url);
+      }).toList();
+      return found;
+    } else if (decoded['response'] == 'error') {
+      if (decoded['error'] == 'character with given name not found') {
+        return [];
+      }
+      throw Exception('UnKnown error happend');
+    }
 
     List<SuperheroInfo> NewSuperheroes = [];
     SuperheroInfo.mocked.forEach((element) {
       if (element.name.toLowerCase().contains(text.toLowerCase())) {
         NewSuperheroes.add(element);
-      }  
-
+      }
     });
 
-
     return NewSuperheroes;
-
   }
 
   Stream<MainPageState> observeMainPageState() => stateSubject;
@@ -104,6 +133,7 @@ class MainBloc {
     seachedSuperheroesSubject.close();
     currentTextSubject.close();
     textSubscription?.cancel();
+    client?.close();
   }
 }
 
