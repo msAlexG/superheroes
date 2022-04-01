@@ -1,8 +1,8 @@
 
- class ApiExeption implements  Exception{
+ class ApiException implements  Exception{
   final String message;
 
-  ApiExeption(this.message);
+  ApiException(this.message);
 
   @override
   String toString() {

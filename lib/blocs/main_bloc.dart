@@ -73,6 +73,15 @@ class MainBloc {
     });
   }
 
+
+  void retry(){
+final currentText = currentTextSubject.value;
+searchForSuperheroes(currentText);
+  }
+
+
+
+
   Stream<List<SuperheroInfo>> observeFavoriteSuperherose() =>
       favoriteSuperheroesSubject;
 
@@ -84,10 +93,10 @@ class MainBloc {
     final response = await (client ??= http.Client())
         .get(Uri.parse('https://superheroapi.com/api/$token/search/$text'));
     if (response.statusCode >= 500 && response.statusCode <= 599) {
-      throw ApiExeption('Server error happend');
+      throw ApiException('Server error happend');
     }
     if (response.statusCode >= 400 && response.statusCode <= 499) {
-      throw ApiExeption('Client error happend');
+      throw ApiException('Client error happend');
     }
 
     final decoded = json.decode(response.body);
@@ -107,7 +116,7 @@ class MainBloc {
       if (decoded['error'] == 'character with given name not found') {
         return [];
       }
-      throw ApiExeption('Client error happend');
+      throw ApiException('Client error happend');
     }
 
     throw Exception('UnKnown error happend');

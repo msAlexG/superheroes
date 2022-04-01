@@ -261,6 +261,7 @@ class LoadingErrorWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MainBloc bloc = Provider.of<MainBloc>(context, listen: false);
     return Center(
       child: InfoWithButton(
         title: 'Error happened',
@@ -270,7 +271,7 @@ class LoadingErrorWidget extends StatelessWidget {
         imageTopPadding: 22,
         imageHeight: 106,
         imageWidth: 126,
-        onTap: (){},
+        onTap: bloc.retry,
       ),
     );
   }
