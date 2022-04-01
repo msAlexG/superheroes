@@ -54,22 +54,46 @@ class _MainPageState extends State<MainPage> {
 }
 
 
-class MainPageContent extends StatelessWidget {
+class MainPageContent extends StatefulWidget {
+  @override
+  State<MainPageContent> createState() => _MainPageContentState();
+}
+
+class _MainPageContentState extends State<MainPageContent> {
+  late FocusNode serchFieldFocusNode;
+
+
+  @override
+  void initState() {
+    super.initState();
+   serchFieldFocusNode = FocusNode();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        MainPageStateWidget(),
+        MainPageStateWidget(serchFieldFocusNode: serchFieldFocusNode),
         Padding(
           padding: const EdgeInsets.only(top: 12, left: 16, right: 16),
-          child: SearchWidget(),
+          child: SearchWidget( serchFieldFocusNode: serchFieldFocusNode),
         )
       ],
     );
   }
+
+  @override
+  void dispose() {
+    serchFieldFocusNode.dispose();
+    super.dispose();
+  }
+
 }
 
 class SearchWidget extends StatefulWidget {
+  final FocusNode serchFieldFocusNode;
+
+  const SearchWidget({Key? key,required this.serchFieldFocusNode}) : super(key: key);
   @override
   State<SearchWidget> createState() => _SearchWidgetState();
 }
@@ -104,7 +128,7 @@ class _SearchWidgetState extends State<SearchWidget> {
     //FocusNode focusNode  = FocusNode ();
     // final MainBloc bloc = Provider.of<MainBloc>(context, listen: false);
     return TextField(
-      //focusNode: focusNode,
+      focusNode: widget.serchFieldFocusNode,
       textInputAction: TextInputAction.search,
       textCapitalization: TextCapitalization.words,
       // каждая буква слова с большой буквы
@@ -147,6 +171,9 @@ class _SearchWidgetState extends State<SearchWidget> {
 }
 
 class MainPageStateWidget extends StatelessWidget {
+  final FocusNode serchFieldFocusNode;
+
+  const MainPageStateWidget({Key? key, required this.serchFieldFocusNode}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final MainBloc bloc = Provider.of<MainBloc>(context, listen: false);
@@ -161,7 +188,7 @@ class MainPageStateWidget extends StatelessWidget {
           case MainPageState.noFavorites:
             return Stack(
               children: [
-                NoFavoritesWidget(),
+                NoFavoritesWidget(serchFieldFocusNode: serchFieldFocusNode),
                 Align(alignment: Alignment.bottomCenter,
                     child: ActionButton(text: 'Remove', onTap: bloc.removeFavorite))
               ],
@@ -171,7 +198,7 @@ class MainPageStateWidget extends StatelessWidget {
           case MainPageState.loading:
             return LoadingIndicator();
           case MainPageState.nothingFound:
-            return NothingFoundWidget();
+            return NothingFoundWidget(serchFieldFocusNode: serchFieldFocusNode , );
           case MainPageState.loadingError:
             return LoadingErrorWidget();
           case MainPageState.searchResults:
@@ -206,8 +233,10 @@ class MainPageStateWidget extends StatelessWidget {
 }
 
 class NoFavoritesWidget extends StatelessWidget {
+  final FocusNode serchFieldFocusNode;
+
   const NoFavoritesWidget({
-    Key? key,
+    Key? key, required this.serchFieldFocusNode,
   }) : super(key: key);
 
   @override
@@ -220,7 +249,7 @@ class NoFavoritesWidget extends StatelessWidget {
       imageTopPadding: 9,
       imageHeight: 119,
       imageWidth: 108,
-      onTap: (){},
+      onTap: () => serchFieldFocusNode.requestFocus(),
     );
   }
 }
@@ -247,19 +276,16 @@ class LoadingErrorWidget extends StatelessWidget {
   }
 }
 
-class NothingFoundWidget extends StatefulWidget {
+class NothingFoundWidget extends StatelessWidget {
+  final FocusNode serchFieldFocusNode;
   const NothingFoundWidget({
-    Key? key,
+    Key? key, required this.serchFieldFocusNode,
   }) : super(key: key);
 
-  @override
-  State<NothingFoundWidget> createState() => _NothingFoundWidgetState();
-}
 
-class _NothingFoundWidgetState extends State<NothingFoundWidget> {
-  @override
 
   Widget build(BuildContext context) {
+
     final MainBloc bloc = Provider.of<MainBloc>(context, listen: false);
    //  final SearchWidget =  Provider.of<SearchWidget>(context, listen: false);
     return InfoWithButton(
@@ -270,9 +296,7 @@ class _NothingFoundWidgetState extends State<NothingFoundWidget> {
       imageTopPadding: 16,
       imageHeight: 112,
       imageWidth: 84,
-      onTap: (){ setState(() {
-       // controllerEmpty = true;
-      }); },
+      onTap: () => serchFieldFocusNode.requestFocus() ,
     );
   }
 }
