@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
+import 'package:superheroes/exception/api_exception.dart';
 import 'package:superheroes/model/superhero.dart';
 
 class MainBloc {
@@ -11,7 +12,7 @@ class MainBloc {
   final BehaviorSubject<MainPageState> stateSubject = BehaviorSubject();
 
   final favoriteSuperheroesSubject =
-      BehaviorSubject<List<SuperheroInfo>>.seeded(SuperheroInfo.mocked);
+  BehaviorSubject<List<SuperheroInfo>>.seeded(SuperheroInfo.mocked);
   final seachedSuperheroesSubject = BehaviorSubject<List<SuperheroInfo>>();
   final currentTextSubject = BehaviorSubject<String>.seeded('');
 
@@ -24,26 +25,26 @@ class MainBloc {
     stateSubject.add(MainPageState.noFavorites);
     textSubscription =
         Rx.combineLatest2<String, List<SuperheroInfo>, MainPageStateInfo>(
-                currentTextSubject
-                    .distinct()
-                    .debounceTime(Duration(milliseconds: 500)),
-                favoriteSuperheroesSubject,
+            currentTextSubject
+                .distinct()
+                .debounceTime(Duration(milliseconds: 500)),
+            favoriteSuperheroesSubject,
                 (searcedText, favorites) =>
-                    MainPageStateInfo(searcedText, favorites.isNotEmpty))
+                MainPageStateInfo(searcedText, favorites.isNotEmpty))
             .listen((value) {
-      searchSubscription?.cancel();
-      if (value.searchText.isEmpty) {
-        if (value.haveFavorites) {
-          stateSubject.add(MainPageState.favorites);
-        } else {
-          stateSubject.add(MainPageState.noFavorites);
-        }
-      } else if (value.searchText.length < minSymbols) {
-        stateSubject.add(MainPageState.minSymbols);
-      } else {
-        searchForSuperheroes(value.searchText);
-      }
-    });
+          searchSubscription?.cancel();
+          if (value.searchText.isEmpty) {
+            if (value.haveFavorites) {
+              stateSubject.add(MainPageState.favorites);
+            } else {
+              stateSubject.add(MainPageState.noFavorites);
+            }
+          } else if (value.searchText.length < minSymbols) {
+            stateSubject.add(MainPageState.minSymbols);
+          } else {
+            searchForSuperheroes(value.searchText);
+          }
+        });
   }
 
   removeFavorite() {
@@ -82,6 +83,12 @@ class MainBloc {
     final token = dotenv.env['SUPERHERO_TOKEN'];
     final response = await (client ??= http.Client())
         .get(Uri.parse('https://superheroapi.com/api/$token/search/$text'));
+    if (response.statusCode >= 500 && response.statusCode <= 599) {
+      throw ApiExeption('Server error happend');
+    }
+    if (response.statusCode >= 400 && response.statusCode <= 499) {
+      throw ApiExeption('Client error happend');
+    }
 
     final decoded = json.decode(response.body);
     if (decoded['response'] == 'success') {
@@ -100,18 +107,13 @@ class MainBloc {
       if (decoded['error'] == 'character with given name not found') {
         return [];
       }
-      throw Exception('UnKnown error happend');
+      throw ApiExeption('Client error happend');
     }
 
-    List<SuperheroInfo> NewSuperheroes = [];
-    SuperheroInfo.mocked.forEach((element) {
-      if (element.name.toLowerCase().contains(text.toLowerCase())) {
-        NewSuperheroes.add(element);
-      }
-    });
-
-    return NewSuperheroes;
+    throw Exception('UnKnown error happend');
   }
+
+
 
   Stream<MainPageState> observeMainPageState() => stateSubject;
 
