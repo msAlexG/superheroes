@@ -10,6 +10,10 @@ class SuperheroesColors {
   static const white24 = Colors.white24;
   static const backgroundcard = Color(0xFF2C3243);
   static const indigo75 = Color(0xBF2C3243);
+  static const red = Color(0xBF961B1B);
+  static const grey = Color(0xBF727272);
+  static const green = Color(0xBF2AAB6A);
+
 
 
 
