@@ -16,12 +16,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MainPage(),
+        home: MainPage(),
         theme: ThemeData(
           textTheme: GoogleFonts.openSansTextTheme(
             Theme.of(context)
                 .textTheme, // If this is not set, then ThemeData.light().textTheme is used.
           ),
-        )    );
+        ));
   }
 }

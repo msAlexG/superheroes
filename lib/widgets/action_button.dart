@@ -19,7 +19,6 @@ class ActionButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8), color: SuperheroesColors.blue),
         margin: const EdgeInsets.only( bottom: 30),
