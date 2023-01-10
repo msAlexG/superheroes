@@ -14,6 +14,9 @@ class SuperheroBloc {
 
   final superheroSubject = BehaviorSubject<Superhero>();
 
+final superheroPageState = BehaviorSubject<SuperheroPageState>();
+
+
   StreamSubscription? requestSubscription;
   StreamSubscription? getFromFavoritesSubscription;
   StreamSubscription? addToFavoriteSubscription;
@@ -23,20 +26,24 @@ class SuperheroBloc {
     getFromFavorites();
   }
 
-  void getFromFavorites(){
+  void getFromFavorites() {
     getFromFavoritesSubscription?.cancel();
     getFromFavoritesSubscription = FavoriteSuperheroesStorage.getInstance()
         .getSuperhiro(id)
         .asStream()
         .listen((superhero) {
-          if(superhero != null){
-            superheroSubject.add(superhero);
-          }
+      if (superhero != null) {
+        superheroSubject.add(superhero);
+        superheroPageState.add(SuperheroPageState.loaded);
+      }
+      else{
+        superheroPageState.add(SuperheroPageState.loading);
+      }
 
-     requestSuperhero();
+      requestSuperhero(superhero != null);
     },
-        onError: (error, stackTace) => print(
-            'Error happened in requestSuperhero: $error, $stackTace'));
+            onError: (error, stackTace) => print(
+                'Error happened in requestSuperhero: $error, $stackTace'));
   }
 
   void addToFavorite() {
@@ -72,12 +79,16 @@ class SuperheroBloc {
   Stream<bool> observeIsFavorite() =>
       FavoriteSuperheroesStorage.getInstance().observeIsFavorite(id);
 
-  void requestSuperhero() {
+  void requestSuperhero( final bool isInFavorites) {
     requestSubscription?.cancel();
 
     requestSubscription = request().asStream().listen((superhero) {
       superheroSubject.add(superhero);
+      superheroPageState.add(SuperheroPageState.loaded);
     }, onError: (error, stackTrace) {
+      if(!isInFavorites){
+        superheroPageState.add(SuperheroPageState.error);
+      }
       print('Error happend in requestSuperhero: $error, $StackTrace');
     });
   }
@@ -104,6 +115,7 @@ class SuperheroBloc {
   }
 
   Stream<Superhero> observeSuperhero() => superheroSubject;
+  Stream<SuperheroPageState> observeSuperheroPageState() => superheroPageState.distinct();
 
   void dispose() {
     client?.close();
@@ -111,7 +123,15 @@ class SuperheroBloc {
     requestSubscription?.cancel();
     addToFavoriteSubscription?.cancel();
     removeFromFavoriteSubscription?.cancel();
-
+    superheroPageState.close();
     superheroSubject.close();
   }
+
+
+}
+
+enum SuperheroPageState {
+  loading,
+  loaded,
+  error,
 }
